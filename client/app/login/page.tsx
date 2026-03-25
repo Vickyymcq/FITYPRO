@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { supabase } from '@shared/supabase';
 
 export default function LoginPage() {
+  const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -60,17 +61,21 @@ export default function LoginPage() {
     }
 
     if (authData.user) {
-      console.log('Signup successful, creating profile...');
-      // Create initial profile
+      console.log('Signup successful, creating/updating profile...');
+      // Create or update initial profile safely
       const { error: profileError } = await supabase
         .from('profiles')
-        .insert([{ id: authData.user.id, role: 'client' }]);
+        .upsert({ id: authData.user.id, role: 'client' }, { onConflict: 'id' });
 
       if (profileError) {
         console.error('Profile Creation Error:', profileError.message);
-        alert('Account created, but profile setup failed: ' + profileError.message);
+        if (!profileError.message.includes('duplicate key')) {
+          alert('Account created, but profile setup failed: ' + profileError.message);
+        }
       } else {
-        alert('Signup successful! Check your email for a verification link, then login.');
+        alert('Signup successful! Profile saved. Now please LOGIN with your credentials.');
+        // Switch to login mode automatically
+        setIsLogin(true);
       }
       setLoading(false);
     }
@@ -84,7 +89,9 @@ export default function LoginPage() {
       </header>
 
       <div className="card" style={{ padding: '30px', boxShadow: '0 20px 40px rgba(0,0,0,0.3)' }}>
-        <h2 style={{ marginBottom: '25px', fontSize: '1.5rem', textAlign: 'center' }}>Login to Your Fitness</h2>
+        <h2 style={{ marginBottom: '25px', fontSize: '1.5rem', textAlign: 'center' }}>
+          {isLogin ? 'Login to Your Fitness' : 'Create Your Account'}
+        </h2>
         
         <div className="input-group">
           <label style={{ fontSize: '0.8rem', opacity: 0.7, marginBottom: '8px', display: 'block' }}>Email Address</label>
@@ -108,28 +115,45 @@ export default function LoginPage() {
           />
         </div>
 
-        <div style={{ display: 'flex', gap: '15px', marginTop: '30px' }}>
-          <button 
-            className="btn btn-primary" 
-            onClick={handleLogin}
-            disabled={loading || !email || !password}
-            style={{ flex: 1 }}
-          >
-            {loading ? '...' : 'Login'}
-          </button>
-          <button 
-            className="btn btn-outline" 
-            onClick={handleSignup}
-            disabled={loading || !email || !password}
-            style={{ flex: 1 }}
-          >
-            Signup
-          </button>
+        <div style={{ marginTop: '30px' }}>
+          {isLogin ? (
+            <button 
+              className="btn btn-primary" 
+              onClick={handleLogin}
+              disabled={loading || !email || !password}
+              style={{ width: '100%' }}
+            >
+              {loading ? '...' : 'Login Now'}
+            </button>
+          ) : (
+            <button 
+              className="btn btn-primary" 
+              onClick={handleSignup}
+              disabled={loading || !email || !password}
+              style={{ width: '100%' }}
+            >
+              {loading ? '...' : 'Create Account & Save Profile'}
+            </button>
+          )}
         </div>
 
-        <p style={{ textAlign: 'center', marginTop: '20px', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-          Forgot Password? <span style={{ color: 'var(--primary)', cursor: 'pointer' }} onClick={() => alert('Recovery functionality connected to Supabase Auth.')}>Reset Now</span>
+        <p style={{ textAlign: 'center', marginTop: '20px', fontSize: '0.85rem' }}>
+          <span style={{ color: 'var(--text-muted)' }}>
+            {isLogin ? "Don't have an account?" : "Already have an account?"}
+          </span>{' '}
+          <span 
+            style={{ color: 'var(--primary)', cursor: 'pointer', fontWeight: 'bold' }} 
+            onClick={() => setIsLogin(!isLogin)}
+          >
+            {isLogin ? 'Signup Now' : 'Login Instead'}
+          </span>
         </p>
+
+        {isLogin && (
+          <p style={{ textAlign: 'center', marginTop: '15px', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+            <span style={{ cursor: 'pointer' }} onClick={() => alert('Recovery functionality connected to Supabase Auth.')}>Forgot Password?</span>
+          </p>
+        )}
       </div>
 
       <footer style={{ textAlign: 'center', marginTop: '40px', fontSize: '0.75rem', color: 'var(--text-muted)', lineHeight: '1.6' }}>
