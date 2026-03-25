@@ -35,6 +35,38 @@ export default function SlotManagement() {
     }
   };
 
+  const handleGenerateAutoSlots = async () => {
+    if (!confirm('Generate standard 7-day schedule (Morning/Afternoon/Evening)?')) return;
+    setLoading(true);
+    const days = 7;
+    const morning = ['06:00', '07:00', '08:00'];
+    const afternoon = ['10:00', '11:00'];
+    const evening = ['18:00', '19:00'];
+    
+    const newSlots = [];
+    for (let i = 0; i < days; i++) {
+      const date = new Date();
+      date.setDate(date.getDate() + i);
+      const dateStr = date.toISOString().split('T')[0];
+      
+      [...morning, ...afternoon, ...evening].forEach(startTime => {
+        const startHour = parseInt(startTime.split(':')[0]);
+        newSlots.push({
+          date: dateStr,
+          start_time: startTime + ':00',
+          end_time: (startHour + 1).toString().padStart(2, '0') + ':00:00',
+          capacity: 10,
+          gender_filter: 'Unisex'
+        });
+      });
+    }
+
+    const { error } = await supabase.from('slots').insert(newSlots);
+    if (error) alert(error.message);
+    else window.location.reload();
+    setLoading(false);
+  };
+
   const handleDeleteSlot = async (id: string) => {
     if (confirm('Delete this slot?')) {
       const { error } = await supabase.from('slots').delete().eq('id', id);
@@ -46,7 +78,10 @@ export default function SlotManagement() {
     <div>
       <header style={{ marginBottom: '30px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h1>Production Slot Engine</h1>
-        <button className="btn btn-primary" onClick={handleCreateSlot}>+ New Slot</button>
+        <div style={{ display: 'flex', gap: '10px' }}>
+          <button className="btn btn-outline" onClick={handleGenerateAutoSlots} disabled={loading}>Generate 7-Day Schedule</button>
+          <button className="btn btn-primary" onClick={handleCreateSlot}>+ New Slot</button>
+        </div>
       </header>
 
       <div className="card" style={{ padding: 0 }}>
