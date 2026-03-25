@@ -40,6 +40,14 @@ function DashboardContent() {
     fetchData();
   }, [router]);
 
+  const handleJoin = () => {
+    if (nextSession?.meet_link) {
+      window.open(nextSession.meet_link, '_blank');
+    } else {
+      alert('Meet link will be available 5 minutes before the session.');
+    }
+  };
+
   const handleLogout = async () => {
     await supabase.auth.signOut();
     localStorage.removeItem('isLoggedIn');
