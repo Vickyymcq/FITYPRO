@@ -105,11 +105,29 @@ export default function UserManagement() {
                   </span>
                 </td>
                 <td>
-                  <div 
-                    style={{ fontWeight: 'bold', color: 'var(--secondary)', cursor: 'pointer' }}
-                    onClick={() => handleUpdateSessions(user.id, user.subscriptions?.[0]?.remaining_sessions || 0)}
-                  >
-                    {user.subscriptions?.[0]?.remaining_sessions || 0} Left
+                  <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                    <div 
+                      style={{ fontWeight: 'bold', color: 'var(--secondary)', cursor: 'pointer', fontSize: '0.85rem' }}
+                      onClick={() => handleUpdateSessions(user.id, user.subscriptions?.[0]?.remaining_sessions || 0)}
+                    >
+                      {user.subscriptions?.[0]?.remaining_sessions || 0} Left
+                    </div>
+                    <button 
+                      onClick={async () => {
+                        if (confirm(`Are you sure you want to delete member ${user.name}? This will remove all their data.`)) {
+                          const { error } = await supabase.from('profiles').delete().eq('id', user.id);
+                          if (!error) {
+                            setUsers(users.filter(u => u.id !== user.id));
+                            alert('User deleted.');
+                          } else {
+                            alert('Error: ' + error.message);
+                          }
+                        }
+                      }}
+                      style={{ background: 'none', border: 'none', color: 'var(--error)', cursor: 'pointer', fontSize: '0.75rem', padding: '5px' }}
+                    >
+                      Delete
+                    </button>
                   </div>
                 </td>
                 <td>{user.trainers?.name || 'Unassigned'}</td>
