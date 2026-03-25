@@ -67,6 +67,13 @@ export default function SlotManagement() {
     setLoading(false);
   };
 
+  const handleAssignTrainer = async (slotId: string, trainerId: string) => {
+    const { error } = await supabase.from('slots').update({ trainer_id: trainerId }).eq('id', slotId);
+    if (!error) {
+      setSlots(slots.map(s => s.id === slotId ? { ...s, trainer_id: trainerId, trainers: trainers.find(t => t.id === trainerId) } : s));
+    }
+  };
+
   const handleDeleteSlot = async (id: string) => {
     if (confirm('Delete this slot?')) {
       const { error } = await supabase.from('slots').delete().eq('id', id);
@@ -105,7 +112,16 @@ export default function SlotManagement() {
                 <td>{s.start_time.slice(0,5)} - {s.end_time.slice(0,5)}</td>
                 <td>{s.gender_filter}</td>
                 <td>{s.booked_count} / {s.capacity}</td>
-                <td>{s.trainers?.name || 'TBD'}</td>
+                <td>
+                  <select 
+                    value={s.trainer_id || ''} 
+                    onChange={(e) => handleAssignTrainer(s.id, e.target.value)}
+                    style={{ background: 'none', border: '1px solid rgba(255,255,255,0.1)', color: 'white', fontSize: '0.75rem', padding: '5px', borderRadius: '4px' }}
+                  >
+                    <option value="">Unassigned</option>
+                    {trainers.map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
+                  </select>
+                </td>
                 <td style={{ textAlign: 'right', paddingRight: '20px' }}>
                   <button className="btn btn-outline" style={{ color: 'var(--error)', fontSize: '0.7rem' }} onClick={() => handleDeleteSlot(s.id)}>Delete</button>
                 </td>
