@@ -1,0 +1,17 @@
+{
+  "name": "fity-pro-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "client",
+    "admin"
+  ],
+  "scripts": {
+    "dev:client": "npm run dev --prefix client",
+    "dev:admin": "npm run dev --prefix admin",
+    "build:client": "npm run build --prefix client",
+    "build:admin": "npm run build --prefix admin",
+    "build": "npm run build:client && npm run build:admin",
+    "install:all": "npm install && npm install --prefix client && npm install --prefix admin"
+  }
+}
