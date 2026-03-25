@@ -1,6 +1,10 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
+
 export default function AdminDashboard() {
+  const router = useRouter();
+  
   const stats = [
     { label: 'Total Users', value: '1,240', change: '+12%', color: 'var(--primary)' },
     { label: 'Active Subscriptions', value: '850', change: '+5%', color: 'var(--secondary)' },
@@ -15,7 +19,12 @@ export default function AdminDashboard() {
           <h1 style={{ fontSize: '1.8rem' }}>Dashboard Overview</h1>
           <p style={{ color: 'var(--text-muted)' }}>Welcome back to the Fity Pro command center.</p>
         </div>
-        <button className="btn btn-primary">+ Add New Slot</button>
+        <button 
+          className="btn btn-primary" 
+          onClick={() => router.push('/plans')}
+        >
+          + Add New Slot
+        </button>
       </header>
 
       {/* Stats Grid */}
@@ -79,35 +88,35 @@ export default function AdminDashboard() {
         <h3>Recent Transactions</h3>
         <table className="table">
           <thead>
-            <tr>
-              <th>User</th>
+            <tr style={{ textAlign: 'left' }}>
+              <th style={{ padding: '15px 0' }}>User</th>
               <th>Plan</th>
               <th>Amount</th>
               <th>Status</th>
-              <th>Date</th>
+              <th style={{ textAlign: 'right' }}>Date</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Amit Kumar</td>
+            <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.02)' }}>
+              <td style={{ padding: '15px 0' }}>Amit Kumar</td>
               <td>Standard</td>
               <td>₹3,588</td>
               <td><span className="badge" style={{ backgroundColor: 'rgba(34, 197, 94, 0.1)', color: 'var(--success)' }}>Completed</span></td>
-              <td>Today, 10:45 AM</td>
+              <td style={{ textAlign: 'right' }}>Today, 10:45 AM</td>
             </tr>
-            <tr>
-              <td>Sneha Patil</td>
+            <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.02)' }}>
+              <td style={{ padding: '15px 0' }}>Sneha Patil</td>
               <td>Premium</td>
               <td>₹7,188</td>
               <td><span className="badge" style={{ backgroundColor: 'rgba(34, 197, 94, 0.1)', color: 'var(--success)' }}>Completed</span></td>
-              <td>Today, 09:12 AM</td>
+              <td style={{ textAlign: 'right' }}>Today, 09:12 AM</td>
             </tr>
             <tr>
-              <td>Rajiv Mehta</td>
+              <td style={{ padding: '15px 0' }}>Rajiv Mehta</td>
               <td>Basic</td>
               <td>₹2,388</td>
               <td><span className="badge" style={{ backgroundColor: 'rgba(255, 77, 77, 0.1)', color: 'var(--error)' }}>Failed</span></td>
-              <td>Yesterday, 08:30 PM</td>
+              <td style={{ textAlign: 'right' }}>Yesterday, 08:30 PM</td>
             </tr>
           </tbody>
         </table>
