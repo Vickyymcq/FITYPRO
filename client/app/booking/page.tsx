@@ -64,7 +64,7 @@ function BookingContent() {
     const { data: { user } } = await supabase.auth.getUser();
 
     const options = {
-      key: 'rzp_test_5p9lre0u9lre',
+      key: process.env.NEXT_PUBLIC_RAZORPAY_KEY || 'rzp_test_5p9lre0u9lre',
       amount: amount,
       currency: 'INR',
       name: 'Fity Pro',
