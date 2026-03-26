@@ -3,11 +3,12 @@
 import { useState, useEffect, Suspense } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@shared/supabase';
+import { Profile, Slot } from '@shared/types';
 
 function DashboardContent() {
   const router = useRouter();
-  const [profile, setProfile] = useState<any>(null);
-  const [nextSession, setNextSession] = useState<any>(null);
+  const [profile, setProfile] = useState<Profile | null>(null);
+  const [nextSession, setNextSession] = useState<Slot | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

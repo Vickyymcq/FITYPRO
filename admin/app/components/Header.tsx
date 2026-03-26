@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 export default function Header() {
   const router = useRouter();
@@ -21,11 +22,12 @@ export default function Header() {
           textAlign: 'center'
         }}
       >
-        <img 
+        <Image 
           src="/logo.jpg" 
           alt="Fity Pro" 
+          width={35}
+          height={35}
           style={{ 
-            height: '35px', 
             borderRadius: '50%'
           }} 
         />

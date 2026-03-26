@@ -2,9 +2,10 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import { supabase } from '@shared/supabase';
+import { Profile } from '@shared/types';
 
 export default function UserManagement() {
-  const [users, setUsers] = useState<any[]>([]);
+  const [users, setUsers] = useState<Profile[]>([]);
   const [search, setSearch] = useState('');
   const [filterGender, setFilterGender] = useState('All');
   const [loading, setLoading] = useState(true);
@@ -40,7 +41,7 @@ export default function UserManagement() {
         .eq('user_id', userId);
       
       if (!error) {
-        setUsers(users.map(u => u.id === userId ? { ...u, subscriptions: [{ ...u.subscriptions[0], remaining_sessions: parseInt(count) }] } : u));
+        setUsers(users.map(u => u.id === userId ? { ...u, subscriptions: u.subscriptions ? [{ ...u.subscriptions[0], remaining_sessions: parseInt(count) }] : [] } : u));
         alert('Updated successfully.');
       }
     }

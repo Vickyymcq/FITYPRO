@@ -2,20 +2,21 @@
 
 import { useState, useEffect } from 'react';
 import { supabase } from '@shared/supabase';
+import { Profile } from '@shared/types';
+
+const sourceColors: Record<string, string> = {
+  'Instagram': '#E1306C',
+  'Facebook': '#1877F2',
+  'Google': '#4285F4',
+  'YouTube': '#FF0000',
+  'Friend/Referral': '#25D366',
+  'Other': '#888888'
+};
 
 export default function MarketingAnalytics() {
   const [loading, setLoading] = useState(true);
-  const [sources, setSources] = useState<any[]>([]);
+  const [sources, setSources] = useState<{ name: string; count: number; percentage: number; color: string }[]>([]);
   const [totalSignups, setTotalSignups] = useState(0);
-
-  const sourceColors: Record<string, string> = {
-    'Instagram': '#E1306C',
-    'Facebook': '#1877F2',
-    'Google': '#4285F4',
-    'YouTube': '#FF0000',
-    'Friend/Referral': '#25D366',
-    'Other': '#888888'
-  };
 
   useEffect(() => {
     const fetchMarketingData = async () => {
@@ -29,7 +30,7 @@ export default function MarketingAnalytics() {
         setTotalSignups(data.length);
         
         const counts: Record<string, number> = {};
-        data.forEach(item => {
+        (data as Profile[]).forEach(item => {
           const source = item.marketing_source || 'Other';
           counts[source] = (counts[source] || 0) + 1;
         });
@@ -93,7 +94,7 @@ export default function MarketingAnalytics() {
       <div className="card mt-6" style={{ borderLeft: '4px solid var(--primary)' }}>
         <h3>Marketing Summary</h3>
         <p style={{ marginTop: '10px', color: 'var(--text)', fontSize: '0.9rem', lineHeight: '1.6' }}>
-          This data is pulled directly from the "How did you hear about us?" step in the user onboarding flow. 
+          This data is pulled directly from the &quot;How did you hear about us?&quot; step in the user onboarding flow. 
           Use these insights to allocate your advertising budget towards the highest-converting channels.
         </p>
       </div>

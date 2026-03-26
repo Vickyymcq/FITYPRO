@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import './splash.css';
 
 export default function SplashScreen() {
@@ -18,10 +19,13 @@ export default function SplashScreen() {
   return (
     <div className="splash-container">
       <div className="logo-container">
-        <img 
+        <Image 
           src="/logo.jpg" 
           alt="Fity Pro Logo" 
+          width={180}
+          height={180}
           className="splash-logo"
+          priority
         />
       </div>
       <div className="loader"></div>

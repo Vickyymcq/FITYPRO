@@ -3,9 +3,11 @@
 import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { supabase } from '@shared/supabase';
+import { Slot } from '@shared/types';
 
 declare global {
   interface Window {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     Razorpay: any;
   }
 }
@@ -15,7 +17,7 @@ function BookingContent() {
   const searchParams = useSearchParams();
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedSlotId, setSelectedSlotId] = useState('');
-  const [slots, setSlots] = useState<any[]>([]);
+  const [slots, setSlots] = useState<Slot[]>([]);
   const [dates, setDates] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   
@@ -28,7 +30,7 @@ function BookingContent() {
       if (!user) return router.push('/login');
 
       const d = [];
-      let current = new Date();
+      const current = new Date();
       let count = 0;
       while (count < 10) {
         if (current.getDay() !== 0) {
@@ -69,6 +71,7 @@ function BookingContent() {
       currency: 'INR',
       name: 'Fity Pro',
       description: `${planId} Subscription`,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       handler: async function (response: any) {
         // 1. Log Payment
         const { error: paymentError } = await supabase.from('payments').insert({

@@ -15,7 +15,10 @@ export interface Profile {
   experience_level: string;
   marketing_source: string;
   role: UserRole;
+  email?: string;
   created_at: string;
+  subscriptions?: Subscription[];
+  trainers?: { name: string };
 }
 
 export interface Trainer {
@@ -56,6 +59,7 @@ export interface Slot {
   trainer_id?: string;
   batch_name?: string;
   meet_link?: string;
+  trainers?: { name: string };
 }
 
 export interface Booking {
@@ -65,4 +69,6 @@ export interface Booking {
   attendance_status: 'booked' | 'completed' | 'cancelled' | 'no-show';
   payment_id?: string;
   created_at: string;
+  profiles?: { name: string };
+  slots?: Slot;
 }

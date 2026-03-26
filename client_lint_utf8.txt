@@ -1,0 +1,35 @@
+﻿
+> client@0.1.0 lint
+> eslint
+
+
+C:\Users\vicky\.antigravity\fity pro\client\app\components\Header.tsx
+  30:9  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+C:\Users\vicky\.antigravity\fity pro\client\app\page.tsx
+  21:9  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+C:\Users\vicky\.antigravity\fity pro\client\app\plans\page.tsx
+  26:23  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\vicky\.antigravity\fity pro\client\app\plans\page.tsx:26:23
+  24 |     }
+  25 |     
+> 26 |     if (storedGender) setUserGender(storedGender);
+     |                       ^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  27 |     else if (searchParams.get('gender')) setUserGender(searchParams.get('gender')!);
+  28 |   }, [router, searchParams]);
+  29 |  react-hooks/set-state-in-effect
+
+C:\Users\vicky\.antigravity\fity pro\client\next.config.ts
+  1:15  warning  'NextConfig' is defined but never used    @typescript-eslint/no-unused-vars
+  3:19  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+Γ£û 5 problems (2 errors, 3 warnings)
+

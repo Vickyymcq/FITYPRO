@@ -9,7 +9,7 @@ export default function TrainerManagement() {
     { id: '3', name: 'Kabir Singh', specialization: 'Strength Training', active: false, phone: '+91 7766554433' },
   ]);
 
-  const [loading, setLoading] = useState<string | null>(null);
+
 
   const handleToggleStatus = (id: string) => {
     setTrainers(trainers.map(t => t.id === id ? { ...t, active: !t.active } : t));

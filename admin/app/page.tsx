@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@shared/supabase';
+import { Booking } from '@shared/types';
 
 export default function AdminDashboard() {
   const router = useRouter();
@@ -12,7 +13,7 @@ export default function AdminDashboard() {
     { label: 'Estimated Revenue', value: '...', change: 'Total', color: 'var(--success)' },
     { label: 'Upcoming Slots', value: '...', change: 'Next 7 days', color: 'var(--text-muted)' }
   ]);
-  const [recentBookings, setRecentBookings] = useState<any[]>([]);
+  const [recentBookings, setRecentBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

@@ -23,8 +23,13 @@ function PlansContent() {
       router.push('/health-check');
     }
     
-    if (storedGender) setUserGender(storedGender);
-    else if (searchParams.get('gender')) setUserGender(searchParams.get('gender')!);
+    if (storedGender) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setUserGender(storedGender);
+    } else if (searchParams.get('gender')) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setUserGender(searchParams.get('gender')!);
+    }
   }, [router, searchParams]);
 
   const currentPlan = PLANS.find(p => p.id === selectedPlan) || PLANS[1];

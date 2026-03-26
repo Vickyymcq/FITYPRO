@@ -1,6 +1,4 @@
-import type { NextConfig } from "next";
-
-const nextConfig: any = {
+const nextConfig = {
   /* config options here */
   eslint: {
     ignoreDuringBuilds: true,

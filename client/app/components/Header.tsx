@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 export default function Header() {
   const router = useRouter();
@@ -27,11 +28,12 @@ export default function Header() {
         onMouseDown={(e) => e.currentTarget.style.transform = 'scale(0.95)'}
         onMouseUp={(e) => e.currentTarget.style.transform = 'scale(1)'}
       >
-        <img 
+        <Image 
           src="/logo.jpg" 
           alt="Fity Pro" 
+          width={40}
+          height={40}
           style={{ 
-            height: '40px', 
             borderRadius: '50%',
             boxShadow: '0 0 15px rgba(122, 201, 67, 0.3)'
           }} 

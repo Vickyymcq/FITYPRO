@@ -2,10 +2,11 @@
 
 import { useState, useEffect } from 'react';
 import { supabase } from '@shared/supabase';
+import { Slot, Trainer } from '@shared/types';
 
 export default function SlotManagement() {
-  const [slots, setSlots] = useState<any[]>([]);
-  const [trainers, setTrainers] = useState<any[]>([]);
+  const [slots, setSlots] = useState<Slot[]>([]);
+  const [trainers, setTrainers] = useState<Trainer[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -43,7 +44,7 @@ export default function SlotManagement() {
     const afternoon = ['10:00', '11:00'];
     const evening = ['18:00', '19:00'];
     
-    const newSlots = [];
+    const newSlots: Partial<Slot>[] = [];
     for (let i = 0; i < days; i++) {
       const date = new Date();
       date.setDate(date.getDate() + i);
